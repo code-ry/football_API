@@ -1,4 +1,6 @@
 from flask import Flask
+from init import db, bcrypt
+from controllers.cli_controller import db_commands_bp
 import os
 
 def create_app():
@@ -7,5 +9,11 @@ def create_app():
     app.config['JSON_SORT_KEYS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
     app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
-    
+
+    db.init_app(app)
+    bcrypt.init_app(app)
+
+    app.register_blueprint(db_commands_bp)
+
+
     return app
