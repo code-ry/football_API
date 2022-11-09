@@ -15,7 +15,7 @@ class Player(db.Model):
     performances = db.relationship('Performance', back_populates='player', cascade= 'all, delete')
 
 class PlayerSchema(ma.Schema):
-    team = fields.Nested('TeamSchema')
+    team = fields.Nested('TeamSchema', exclude=['players'])
 
     class Meta:
         fields = ('id', 'name', 'age', 'position', 'team')

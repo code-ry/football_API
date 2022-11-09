@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 class Performance(db.Model):
     __tablename__ = 'performances'
@@ -15,5 +16,8 @@ class Performance(db.Model):
     match = db.relationship('Match', back_populates='performances')
 
 class PerformanceSchema(ma.Schema):
+    player = fields.Nested('PlayerSchema', only=['name'])
+    match = fields.Nested('MatchSchema', only=['date'])
+    
     class Meta:
-        fields= ('goals', 'behinds', 'disposals', 'player_id', 'match_id')
+        fields= ('goals', 'behinds', 'disposals', 'player', 'match')

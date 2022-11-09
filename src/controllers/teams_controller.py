@@ -76,3 +76,4 @@ def delete_one_team(id):
         return {'message': f'team {team.name} deleted successfully'}
     else:
         return {'error': f'team not found with id {id}'}, 404
+

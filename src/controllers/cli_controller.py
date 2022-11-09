@@ -107,22 +107,22 @@ def seed_db():
         Score(
             score = 63,
             team = teams[0],
-            match = matches[0]
+            match = matches[0],
         ),
         Score(
             score = 26,
             team = teams[1],
-            match = matches[0]
+            match = matches[0],
         ),
         Score(
             score = 106,
             team = teams[0],
-            match = matches[1]
+            match = matches[1],
         ),
         Score(
             score = 18,
             team = teams[1],
-            match = matches[1]
+            match = matches[1],
         )
     ]
 
