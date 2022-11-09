@@ -26,7 +26,7 @@ def one_player(id):
 
 @players_bp.route('/add/', methods=['POST'])
 @jwt_required()
-def auth_register():
+def add_player():
     authorize()
 
     # retrieve data from incoming POST request and parse the JSON

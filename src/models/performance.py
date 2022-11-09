@@ -1,4 +1,4 @@
-from init import db
+from init import db, ma
 
 class Performance(db.Model):
     __tablename__ = 'performances'
@@ -13,3 +13,7 @@ class Performance(db.Model):
 
     player = db.relationship('Player', back_populates='performances')
     match = db.relationship('Match', back_populates='performances')
+
+class PerformanceSchema(ma.Schema):
+    class Meta:
+        fields= ('goals', 'behinds', 'disposals', 'player_id', 'match_id')

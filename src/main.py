@@ -5,6 +5,10 @@ from controllers.users_controller import users_bp
 from controllers.auth_controller import auth_bp
 from controllers.players_controller import players_bp
 from controllers.teams_controller import teams_bp
+from controllers.matches_controller import matches_bp
+from controllers.scores_controller import scores_bp
+from controllers.performances_controller import performances_bp
+
 import os
 
 def create_app():
@@ -24,6 +28,9 @@ def create_app():
     app.register_blueprint(users_bp)
     app.register_blueprint(players_bp)
     app.register_blueprint(teams_bp)
+    app.register_blueprint(matches_bp)
+    app.register_blueprint(scores_bp)
+    app.register_blueprint(performances_bp)
 
     @app.errorhandler(401)
     def unauthorized(err):

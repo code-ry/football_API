@@ -1,4 +1,4 @@
-from init import db
+from init import db, ma
 
 class Match(db.Model):
     __tablename__ = 'matches'
@@ -8,3 +8,8 @@ class Match(db.Model):
 
     scores = db.relationship('Score', back_populates='match', cascade= 'all, delete')
     performances = db.relationship('Performance', back_populates='match', cascade= 'all, delete')
+
+class MatchSchema(ma.Schema):
+
+    class Meta:
+        fields = ('id', 'date')

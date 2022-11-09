@@ -1,4 +1,4 @@
-from init import db
+from init import db, ma
 
 class Score(db.Model):
     __tablename__ = 'scores'
@@ -11,3 +11,7 @@ class Score(db.Model):
 
     team = db.relationship('Team', back_populates='scores')
     match = db.relationship('Match', back_populates='scores')
+
+class ScoreSchema(ma.Schema):
+    class Meta:
+        fields= ('score', 'team_id', 'match_id')
