@@ -1,4 +1,4 @@
-from init import db
+from init import db, ma
 
 class Team(db.Model):
     __tablename__ = 'teams'
@@ -11,3 +11,8 @@ class Team(db.Model):
 
     players = db.relationship('Player', back_populates='team', cascade= 'all, delete')
     scores = db.relationship('Score', back_populates='team', cascade= 'all, delete')
+
+class TeamSchema(ma.Schema):
+
+    class Meta:
+        fields = ('id', 'name', 'location', 'wins', 'ladder_pos')

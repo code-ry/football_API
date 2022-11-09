@@ -1,6 +1,4 @@
 from init import db, ma
-from marshmallow import fields
-
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -12,8 +10,6 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
 
 class UserSchema(ma.Schema):
-    # cards = fields.List(fields.Nested('CardSchema', exclude=['user']))
-    # comments = fields.List(fields.Nested('CommentSchema', exclude=['user']))
 
     class Meta:
         fields = ('id', 'name', 'email', 'password', 'is_admin')

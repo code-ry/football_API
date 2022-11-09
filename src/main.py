@@ -3,6 +3,7 @@ from init import db, bcrypt, ma, jwt
 from controllers.cli_controller import db_commands_bp
 from controllers.users_controller import users_bp
 from controllers.auth_controller import auth_bp
+from controllers.players_controller import players_bp
 import os
 
 def create_app():
@@ -20,6 +21,7 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(db_commands_bp)
     app.register_blueprint(users_bp)
+    app.register_blueprint(players_bp)
 
     @app.errorhandler(401)
     def unauthorized(err):
