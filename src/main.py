@@ -1,6 +1,7 @@
 from flask import Flask
-from init import db, bcrypt
+from init import db, bcrypt, ma
 from controllers.cli_controller import db_commands_bp
+from controllers.users_controller import users_bp
 import os
 
 def create_app():
@@ -12,8 +13,11 @@ def create_app():
 
     db.init_app(app)
     bcrypt.init_app(app)
+    ma.init_app(app)
+
 
     app.register_blueprint(db_commands_bp)
+    app.register_blueprint(users_bp)
 
 
     return app
