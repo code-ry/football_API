@@ -4,6 +4,9 @@ from datetime import date
 from models.user import User
 from models.team import Team
 from models.player import Player
+from models.match import Match
+from models.score import Score
+from models.performance import Performance
 
 db_commands_bp = Blueprint('db', __name__)
 
@@ -43,6 +46,12 @@ def seed_db():
             location = 'Fremantle',
             wins = 4,
             ladder_pos = '1st'
+        ),
+        Team(
+            name = 'Eagles',
+            location = 'West Coast',
+            wins = 0,
+            ladder_pos = '18th'
         )
     ]
 
@@ -62,3 +71,64 @@ def seed_db():
     db.session.add_all(players)
     db.session.commit()
     print('Players seeded')
+
+    matches = [
+        Match(
+            date = '01/01/2022',
+        ),
+        Match(
+            date = '05/06/2022',
+        )
+    ]
+
+    db.session.add_all(matches)
+    db.session.commit()
+    print('Matches seeded')
+
+    scores = [
+        Score(
+            score = 63,
+            team = teams[0],
+            match = matches[0]
+        ),
+        Score(
+            score = 26,
+            team = teams[1],
+            match = matches[0]
+        ),
+        Score(
+            score = 106,
+            team = teams[0],
+            match = matches[1]
+        ),
+        Score(
+            score = 18,
+            team = teams[1],
+            match = matches[1]
+        )
+    ]
+
+    db.session.add_all(scores)
+    db.session.commit()
+    print('Scores seeded')
+
+    performances = [
+        Performance(
+            goals = 6,
+            behinds = 5,
+            disposals = 25,
+            player = players[0],
+            match = matches[0]
+        ),
+        Performance(
+            goals = 5,
+            behinds = 7,
+            disposals = 30,
+            player = players[0],
+            match = matches[1]
+        ),
+    ]
+
+    db.session.add_all(performances)
+    db.session.commit()
+    print('Performances seeded')

@@ -10,3 +10,4 @@ class Team(db.Model):
     ladder_pos = db.Column(db.String, nullable=False)
 
     players = db.relationship('Player', back_populates='team', cascade= 'all, delete')
+    scores = db.relationship('Score', back_populates='team', cascade= 'all, delete')
