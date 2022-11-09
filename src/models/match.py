@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 class Match(db.Model):
     __tablename__ = 'matches'
@@ -10,6 +11,7 @@ class Match(db.Model):
     performances = db.relationship('Performance', back_populates='match', cascade= 'all, delete')
 
 class MatchSchema(ma.Schema):
+    scores = fields.List(fields.Nested('ScoreSchema', exclude=['match_id']))
 
     class Meta:
-        fields = ('id', 'date')
+        fields = ('id', 'date', 'scores')

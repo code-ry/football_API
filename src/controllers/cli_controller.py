@@ -65,6 +65,24 @@ def seed_db():
             age = 27,
             position = 'Midfield',
             team = teams[0]
+        ),
+        Player(
+            name = 'Andy Brayshaw',
+            age = 26,
+            position = 'Midfield',
+            team = teams[0]
+        ),
+        Player(
+            name = 'Nic Natanui',
+            age = 27,
+            position = 'Ruck',
+            team = teams[1]
+        ),
+        Player(
+            name = 'Josh Kennedy',
+            age = 26,
+            position = 'Forward',
+            team = teams[1]
         )
     ]
 

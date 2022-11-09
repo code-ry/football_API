@@ -1,4 +1,5 @@
 from init import db, ma
+from marshmallow import fields
 
 class Team(db.Model):
     __tablename__ = 'teams'
@@ -13,6 +14,7 @@ class Team(db.Model):
     scores = db.relationship('Score', back_populates='team', cascade= 'all, delete')
 
 class TeamSchema(ma.Schema):
+    players = fields.List(fields.Nested('PlayerSchema', exclude=['team']))
 
     class Meta:
-        fields = ('id', 'name', 'location', 'wins', 'ladder_pos')
+        fields = ('id', 'name', 'location', 'wins', 'ladder_pos', 'players')
