@@ -1,19 +1,23 @@
 from flask import Blueprint, request
-from init import db, bcrypt
+from init import db
 from models.user import User, UserSchema
+from flask_jwt_extended import jwt_required
+from controllers.auth_controller import authorize
 
 users_bp = Blueprint('users', __name__, url_prefix='/users')
 
 @users_bp.route('/')
-# @jwt_required()
+@jwt_required()
 def all_users():
-
+    authorize()
     stmt = db.select(User).order_by(User.name.desc(), User.is_admin)
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True).dump(users)
 
 @users_bp.route('/<int:id>')
+@jwt_required()
 def one_user(id):
+    authorize()
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
     if user:
@@ -22,8 +26,9 @@ def one_user(id):
         return {'error': f'User not found with id {id}'}, 404
 
 @users_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
-# @jwt_required()
+@jwt_required()
 def update_one_User(id):
+    authorize()
     # find the User
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
@@ -39,10 +44,10 @@ def update_one_User(id):
         return {'error': f'User not found with id {id}'}, 404
 
 @users_bp.route('/<int:id>', methods=['DELETE'])
-# @jwt_required()
+@jwt_required()
 def delete_one_user(id):
         # need admin status
-    # authorize()
+    authorize()
 
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)

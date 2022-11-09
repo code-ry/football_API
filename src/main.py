@@ -1,7 +1,8 @@
 from flask import Flask
-from init import db, bcrypt, ma
+from init import db, bcrypt, ma, jwt
 from controllers.cli_controller import db_commands_bp
 from controllers.users_controller import users_bp
+from controllers.auth_controller import auth_bp
 import os
 
 def create_app():
@@ -14,10 +15,14 @@ def create_app():
     db.init_app(app)
     bcrypt.init_app(app)
     ma.init_app(app)
+    jwt.init_app(app)
 
-
+    app.register_blueprint(auth_bp)
     app.register_blueprint(db_commands_bp)
     app.register_blueprint(users_bp)
 
+    @app.errorhandler(401)
+    def unauthorized(err):
+        return {"error" : str(err)}, 401
 
     return app
