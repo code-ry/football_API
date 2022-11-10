@@ -28,13 +28,12 @@ def one_match(id):
 @jwt_required()
 def add_match():
     authorize()
-
     # retrieve data from incoming POST request and parse the JSON
+    data = MatchSchema().load(request.json)
     # Creat new match model instance from the match_info
-
     match = Match(
-        date = request.json['date'],
-        location = request.json['location']
+        date = data['date'],
+        location = data['location']
     )
     # Add and commit match to DB
     db.session.add(match)
@@ -50,10 +49,11 @@ def update_one_match(id):
     stmt = db.select(Match).filter_by(id=id)
     match = db.session.scalar(stmt)
     # if it exists, update it
+    data = MatchSchema().load(request.json)
     if match:
         # use get method to retrieve data as it returns 'none' instead of exception.
-        match.date = request.json.get('date') or match.date
-        match.location = request.json.get('location') or match.location
+        match.date = data.get('date') or match.date
+        match.location = data.get('location') or match.location
         db.session.commit()
         return MatchSchema().dump(match)
     else:

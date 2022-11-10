@@ -29,12 +29,13 @@ def add_score():
     authorize()
 
     # retrieve data from incoming POST request and parse the JSON
+    data = ScoreSchema().load(request.json)
     # Creat new score model instance from the score_info
 
     score = Score(
-        score = request.json['score'],
-        team_id = request.json['team_id'],
-        match_id = request.json['match_id']
+        score = data['score'],
+        team_id = data['team_id'],
+        match_id = data['match_id']
     )
     # Add and commit score to DB
     db.session.add(score)
@@ -50,11 +51,12 @@ def update_one_score(id):
     stmt = db.select(Score).filter_by(id=id)
     score = db.session.scalar(stmt)
     # if it exists, update it
+    data = ScoreSchema().load(request.json)
     if score:
         # use get method to retrieve data as it returns 'none' instead of exception.
-        score.score = request.json.get('score') or score.score
-        score.team_id = request.json.get('team_id') or score.team_id
-        score.match_id = request.json.get('match_id') or score.match_id
+        score.score = data.get('score') or score.score
+        score.team_id = data.get('team_id') or score.team_id
+        score.match_id = data.get('match_id') or score.match_id
 
         db.session.commit()
         return ScoreSchema().dump(score)

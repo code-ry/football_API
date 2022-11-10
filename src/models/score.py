@@ -1,5 +1,6 @@
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Range
 
 class Score(db.Model):
     __tablename__ = 'scores'
@@ -15,7 +16,12 @@ class Score(db.Model):
 class ScoreSchema(ma.Schema):
     team = fields.Nested('TeamSchema', only=['name', 'id'])
     match = fields.Nested('MatchSchema', exclude=['scores'])
+    team_id = fields.Integer(load_only=True)
+    match_id = fields.Integer(load_only=True)
+
+    # Validation
+    score = fields.Integer(validate=Range(min=0, max=300))
 
     class Meta:
-        fields= ('score', 'team', 'match')
+        fields= ('score', 'team', 'match', 'team_id', 'match_id')
         ordered = True

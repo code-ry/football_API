@@ -29,15 +29,16 @@ def add_performance():
     authorize()
 
     # retrieve data from incoming POST request and parse the JSON
+    data = PerformanceSchema().load(request.json)
     # Creat new performance model instance from the performance_info
 
     performance = Performance(
-        goals = request.json['goals'],
-        behinds = request.json['behinds'],
-        disposals = request.json['disposals'],
-        injuries = request.json['injuries'],
-        player_id = request.json['player_id'],
-        match_id = request.json['match_id']
+        goals = data['goals'],
+        behinds = data['behinds'],
+        disposals = data['disposals'],
+        injuries = data['injuries'],
+        player_id = data['player_id'],
+        match_id = data['match_id']
     )
     # Add and commit performance to DB
     db.session.add(performance)
@@ -53,14 +54,15 @@ def update_one_performance(id):
     stmt = db.select(Performance).filter_by(id=id)
     performance = db.session.scalar(stmt)
     # if it exists, update it
+    data = PerformanceSchema().load(request.json)
     if performance:
         # use get method to retrieve data as it returns 'none' instead of exception.
-        performance.goals = request.json.get('goals') or performance.goals
-        performance.behinds = request.json.get('behinds') or performance.behinds
-        performance.disposals = request.json.get('disposals') or performance.disposals
-        performance.injuries = request.json.get('injuries') or performance.injuries
-        performance.player_id = request.json.get('player_id') or performance.player_id
-        performance.match_id = request.json.get('match_id') or performance.match_id
+        performance.goals = data.get('goals') or performance.goals
+        performance.behinds = data.get('behinds') or performance.behinds
+        performance.disposals = data.get('disposals') or performance.disposals
+        performance.injuries = data.get('injuries') or performance.injuries
+        performance.player_id = data.get('player_id') or performance.player_id
+        performance.match_id = data.get('match_id') or performance.match_id
 
         db.session.commit()
         return PerformanceSchema().dump(performance)

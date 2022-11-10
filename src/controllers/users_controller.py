@@ -33,11 +33,12 @@ def update_one_User(id):
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
     # if it exists, update it
+    data = UserSchema().load(request.json)
     if user:
         # use get method to retrieve data as it returns 'none' instead of exception.
-        user.email = request.json.get('email') or user.email
-        user.name = request.json.get('name') or user.name
-        user.is_admin = request.json.get('is_admin') or user.is_admin
+        user.email = data.get('email') or user.email
+        user.name = data.get('name') or user.name
+        user.is_admin = data.get('is_admin') or user.is_admin
         db.session.commit()
         return UserSchema().dump(user)
     else:

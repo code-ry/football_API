@@ -18,11 +18,12 @@ def authorize():
 def auth_register():
     try:
         # Retrieve data from incoming POST request and parse the JSON
+        data = UserSchema().load(request.json)
         # Create new user model instance from the user_info
         user = User(
-            email = request.json['email'],
-            password = bcrypt.generate_password_hash(request.json['password']).decode('utf-8'),
-            name  = request.json.get('name')
+            email = data['email'],
+            password = bcrypt.generate_password_hash(data['password']).decode('utf-8'),
+            name  = data.get('name')
         )
         # Add and commit user to DB
         db.session.add(user)
