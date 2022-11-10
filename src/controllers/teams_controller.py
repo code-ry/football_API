@@ -30,14 +30,14 @@ def auth_register():
     authorize()
 
     # retrieve data from incoming POST request and parse the JSON
+    data = TeamSchema().load(request.json)
     # Creat new team model instance from the team_info
-
     team = Team(
-        name = request.json['name'],
-        home_ground = request.json['home_ground'],
-        losses = request.json['losses'],
-        wins  = request.json['wins'],
-        ladder_position  = request.json['ladder_position']
+        name = data['name'],
+        home_ground = data['home_ground'],
+        losses = data['losses'],
+        wins  = data['wins'],
+        ladder_position  = data['ladder_position']
     )
     # Add and commit team to DB
     db.session.add(team)
@@ -53,13 +53,14 @@ def update_one_team(id):
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     # if it exists, update it
+    data = TeamSchema().load(request.json)
     if team:
         # use get method to retrieve data as it returns 'none' instead of exception.
-        team.name = request.json.get('name') or team.name
-        team.home_ground = request.json.get('home_ground') or team.home_ground
-        team.losses = request.json.get('losses') or team.losses
-        team.wins = request.json.get('wins') or team.wins
-        team.ladder_position = request.json.get('ladder_position') or team.ladder_position
+        team.name = data.get('name') or team.name
+        team.home_ground = data.get('home_ground') or team.home_ground
+        team.losses = data.get('losses') or team.losses
+        team.wins = data.get('wins') or team.wins
+        team.ladder_position = data.get('ladder_position') or team.ladder_position
         db.session.commit()
         return TeamSchema().dump(team)
     else:

@@ -13,7 +13,7 @@ def all_players():
 
     stmt = db.select(Player).order_by(Player.name)
     players = db.session.scalars(stmt).all()
-    return PlayerSchema(many=True).dump(players)
+    return PlayerSchema(many=True, exclude=['team_id']).dump(players)
 
 @players_bp.route('/<int:id>')
 @jwt_required()
@@ -31,17 +31,16 @@ def add_player():
     authorize()
 
     # retrieve data from incoming POST request and parse the JSON
-    # player_info = playerSchema().load(request.json)
-    # Creat new player model instance from the player_info
-
+    data = PlayerSchema().load(request.json)
+    # Creat new player model instance from the data
     player = Player(
-        name = request.json['name'],
-        age = request.json['age'],
-        height_cm = request.json['height_cm'],
-        weight_kg = request.json['weight_kg'],
-        salary_per_year = request.json['salary_per_year'],
-        position  = request.json.get('position'),
-        team_id =  request.json.get('team_id')
+        name = data['name'],
+        age = data['age'],
+        height_cm = data['height_cm'],
+        weight_kg = data['weight_kg'],
+        salary_per_year = data['salary_per_year'],
+        position  = data['position'],
+        team_id =  data['team_id']
     )
     # Add and commit player to DB
     db.session.add(player)
@@ -57,15 +56,16 @@ def update_one_player(id):
     stmt = db.select(Player).filter_by(id=id)
     player = db.session.scalar(stmt)
     # if it exists, update it
+    data = PlayerSchema().load(request.json)
     if player:
         # use get method to retrieve data as it returns 'none' instead of exception.
-        player.name = request.json.get('name') or player.name
-        player.height_cm = request.json.get('height_cm') or player.height_cm
-        player.age = request.json.get('age') or player.age
-        player.weight_kg = request.json.get('weight_kg') or player.weight_kg
-        player.salary_per_year = request.json.get('salary_per_year') or player.salary_per_year
-        player.position = request.json.get('position') or player.position
-        player.team_id = request.json.get('team_id') or player.team_id
+        player.name = data.get('name') or player.name
+        player.height_cm = data.get('height_cm') or player.height_cm
+        player.age = data.get('age') or player.age
+        player.weight_kg = data.get('weight_kg') or player.weight_kg
+        player.salary_per_year = data.get('salary_per_year') or player.salary_per_year
+        player.position = data.get('position') or player.position
+        player.team_id = data.get('team_id') or player.team_id
         db.session.commit()
         return PlayerSchema().dump(player)
     else:

@@ -51,11 +51,11 @@ def create_app():
     @app.errorhandler(IntegrityError)
     def integrity_error(err):
         return {"error" : err.args}, 400
-    # When a required field is not present
+    # When a required field is not present.
     @app.errorhandler(KeyError)
     def key_error(err):
         return {"error" : f'The field {err} is required'}, 400
-    
+    # When an invalid input has been entered into a field.
     @app.errorhandler(ValidationError)
     def validation_error(err):
         return {"error" : err.messages}, 400

@@ -120,7 +120,7 @@ def seed_db():
             height_cm = 216,
             weight_kg = 112,
             salary_per_year = 185000,
-            position = 'Forward',
+            position = 'Full-Forward',
             team = teams[2]
         )
     ]
@@ -204,7 +204,7 @@ def seed_db():
             goals = 6,
             behinds = 5,
             disposals = 25,
-            injury = False,
+            injuries = "Broken Shoulder",
             player = players[0],
             match = matches[0]
         ),
@@ -212,7 +212,6 @@ def seed_db():
             goals = 5,
             behinds = 7,
             disposals = 30,
-            injury = True,
             player = players[0],
             match = matches[1]
         ),
@@ -220,7 +219,6 @@ def seed_db():
             goals = 1,
             behinds = 2,
             disposals = 4,
-            injury = False,
             player = players[0],
             match = matches[2]
         ),
@@ -228,7 +226,6 @@ def seed_db():
             goals = 5,
             behinds = 7,
             disposals = 30,
-            injury = True,
             player = players[1],
             match = matches[1]
         ),
@@ -236,7 +233,7 @@ def seed_db():
             goals = 6,
             behinds = 5,
             disposals = 25,
-            injury = False,
+            injuries = "Torn Hamstring",
             player = players[3],
             match = matches[3]
         ),
@@ -244,7 +241,6 @@ def seed_db():
             goals = 5,
             behinds = 7,
             disposals = 30,
-            injury = True,
             player = players[4],
             match = matches[2]
         )
