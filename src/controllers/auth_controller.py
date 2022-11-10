@@ -17,9 +17,8 @@ def authorize():
 @auth_bp.route('/register/', methods=['POST'])
 def auth_register():
     try:
-        # retrieve data from incoming POST request and parse the JSON
-        # user_info = UserSchema().load(request.json)
-        # Creat new user model instance from the user_info
+        # Retrieve data from incoming POST request and parse the JSON
+        # Create new user model instance from the user_info
         user = User(
             email = request.json['email'],
             password = bcrypt.generate_password_hash(request.json['password']).decode('utf-8'),

@@ -8,6 +8,7 @@ class Performance(db.Model):
     goals = db.Column(db.Integer, nullable=False)
     behinds = db.Column(db.Integer, nullable=False)
     disposals = db.Column(db.Integer, nullable=False)
+    injury = db.Column(db.Boolean, default=False)
 
     player_id = db.Column(db.Integer, db.ForeignKey('players.id'), nullable=False)
     match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), nullable=False)
@@ -16,8 +17,9 @@ class Performance(db.Model):
     match = db.relationship('Match', back_populates='performances')
 
 class PerformanceSchema(ma.Schema):
-    player = fields.Nested('PlayerSchema', only=['name'])
-    match = fields.Nested('MatchSchema', only=['date'])
+    player = fields.Nested('PlayerSchema', only=['name','id'])
+    match = fields.Nested('MatchSchema', only=['date','id','location'])
     
     class Meta:
-        fields= ('goals', 'behinds', 'disposals', 'player', 'match')
+        fields= ('player', 'match', 'goals', 'behinds', 'disposals', 'injury')
+        ordered = True

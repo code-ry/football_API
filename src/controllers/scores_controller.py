@@ -23,7 +23,7 @@ def one_score(id):
     else:
         return {'error': f'score not found with id {id}'}, 404
 
-@scores_bp.route('/add/', methods=['POST'])
+@scores_bp.route('/', methods=['POST'])
 @jwt_required()
 def add_score():
     authorize()

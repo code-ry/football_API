@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from init import db
 from models.match import Match, MatchSchema
+from models.performance import  Performance, PerformanceSchema
 from flask_jwt_extended import jwt_required
 from controllers.auth_controller import authorize
 
@@ -23,7 +24,7 @@ def one_match(id):
     else:
         return {'error': f'match not found with id {id}'}, 404
 
-@matches_bp.route('/add/', methods=['POST'])
+@matches_bp.route('/', methods=['POST'])
 @jwt_required()
 def add_match():
     authorize()
@@ -33,6 +34,7 @@ def add_match():
 
     match = Match(
         date = request.json['date'],
+        location = request.json['location']
     )
     # Add and commit match to DB
     db.session.add(match)
@@ -51,6 +53,7 @@ def update_one_match(id):
     if match:
         # use get method to retrieve data as it returns 'none' instead of exception.
         match.date = request.json.get('date') or match.date
+        match.location = request.json.get('location') or match.location
         db.session.commit()
         return MatchSchema().dump(match)
     else:
@@ -70,3 +73,12 @@ def delete_one_match(id):
         return {'message': f'match {match.name} deleted successfully'}
     else:
         return {'error': f'match not found with id {id}'}, 404
+
+@matches_bp.route('/<int:id>/performances/')
+@jwt_required()
+def all_match_performances(id):
+
+    stmt = db.select(Performance).where(Performance.match_id == id)
+    performances = db.session.scalars(stmt).all()
+
+    return PerformanceSchema(many=True).dump(performances)

@@ -6,7 +6,6 @@ class Score(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=False)
-    winner = db.Column(db.String, nullable=False)
     team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
     match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), nullable=False)
 
@@ -14,7 +13,9 @@ class Score(db.Model):
     match = db.relationship('Match', back_populates='scores')
 
 class ScoreSchema(ma.Schema):
-    team = fields.Nested('TeamSchema', only=['name'])
+    team = fields.Nested('TeamSchema', only=['name', 'id'])
+    match = fields.Nested('MatchSchema', exclude=['scores'])
 
     class Meta:
-        fields= ('score', 'team', 'match_id')
+        fields= ('score', 'team', 'match')
+        ordered = True

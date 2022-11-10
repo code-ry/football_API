@@ -23,7 +23,7 @@ def one_performance(id):
     else:
         return {'error': f'performance not found with id {id}'}, 404
 
-@performances_bp.route('/add/', methods=['POST'])
+@performances_bp.route('/', methods=['POST'])
 @jwt_required()
 def add_performance():
     authorize()
@@ -35,6 +35,7 @@ def add_performance():
         goals = request.json['goals'],
         behinds = request.json['behinds'],
         disposals = request.json['disposals'],
+        injury = request.json['injury'],
         player_id = request.json['player_id'],
         match_id = request.json['match_id']
     )
@@ -57,6 +58,7 @@ def update_one_performance(id):
         performance.goals = request.json.get('goals') or performance.goals
         performance.behinds = request.json.get('behinds') or performance.behinds
         performance.disposals = request.json.get('disposals') or performance.disposals
+        performance.injury = request.json.get('injury') or performance.injury
         performance.player_id = request.json.get('player_id') or performance.player_id
         performance.match_id = request.json.get('match_id') or performance.match_id
 

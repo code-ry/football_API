@@ -46,7 +46,7 @@ def update_one_User(id):
 @users_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_one_user(id):
-        # need admin status
+    # need admin status
     authorize()
 
     stmt = db.select(User).filter_by(id=id)
