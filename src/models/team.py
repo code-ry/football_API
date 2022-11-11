@@ -20,7 +20,7 @@ class Team(db.Model):
 class TeamSchema(ma.Schema):
     players = fields.List(fields.Nested('PlayerSchema', only=['name', 'id', 'position']))
 
-    # Validation
+    # Validation and Sanitation
     name = fields.String(validate=And(
         Length(min=1, max=50, error='Name must be between 1 and 50 characters long'),
         Regexp('^[a-zA-Z ]+$', error='Name must be only letters')))

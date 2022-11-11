@@ -21,7 +21,7 @@ class PerformanceSchema(ma.Schema):
     player = fields.Nested('PlayerSchema', only=['name','id'])
     match = fields.Nested('MatchSchema', only=['date','id','location'])
 
-    # Validation
+    # Validation and Sanitation
     goals = fields.Integer(validate=Range(min=0, max=20))
     behinds = fields.Integer(validate=Range(min=0, max=20))
     disposals = fields.Integer(validate=Range(min=0, max=100))

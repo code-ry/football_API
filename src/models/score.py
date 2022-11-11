@@ -19,7 +19,7 @@ class ScoreSchema(ma.Schema):
     team_id = fields.Integer(load_only=True)
     match_id = fields.Integer(load_only=True)
 
-    # Validation
+    # Validation and Sanitation
     score = fields.Integer(validate=Range(min=0, max=300))
 
     class Meta:

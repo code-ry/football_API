@@ -15,7 +15,7 @@ class Match(db.Model):
 class MatchSchema(ma.Schema):
     scores = fields.List(fields.Nested('ScoreSchema', exclude=['match']))
 
-    # Validation
+    # Validation and Sanitation
     location = fields.String(validate=And(
         Length(min=1, max=50, error='location must be between 1 and 50 characters long'),
         Regexp('^[a-zA-Z ]+$', error='location must be only letters')))
