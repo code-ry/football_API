@@ -12,6 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from marshmallow.exceptions import ValidationError
 
 
+
 import os
 
 def create_app():
