@@ -9,6 +9,7 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 def authorize():
     user_id = get_jwt_identity()
+    # selects users that have id matching input value
     stmt = db.select(User).filter_by(id=user_id)
     user = db.session.scalar(stmt)
     if not user.is_admin:
@@ -38,6 +39,7 @@ def auth_register():
 def auth_login():
 
     # Check if user exists and
+    # select user that matches input value
     stmt = db.select(User).filter_by(email=request.json['email'])
     user = db.session.scalar(stmt)
     

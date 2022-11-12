@@ -9,6 +9,7 @@ performances_bp = Blueprint('performances', __name__, url_prefix='/performances'
 @performances_bp.route('/')
 @jwt_required()
 def all_performances():
+    # selects all performances and orders by the player_id attribute
     stmt = db.select(Performance).order_by(Performance.player_id)
     performances = db.session.scalars(stmt).all()
     return PerformanceSchema(many=True).dump(performances)
@@ -16,6 +17,7 @@ def all_performances():
 @performances_bp.route('/<int:id>')
 @jwt_required()
 def one_performance(id):
+    # selects all performoances and returns ones matching id with the input value
     stmt = db.select(Performance).filter_by(id=id)
     performance = db.session.scalar(stmt)
     if performance:
@@ -51,6 +53,7 @@ def add_performance():
 def update_one_performance(id):
     authorize()
     # find the performance
+    # selects all performoances and returns ones matching id with the input value
     stmt = db.select(Performance).filter_by(id=id)
     performance = db.session.scalar(stmt)
     # if it exists, update it
@@ -74,7 +77,7 @@ def update_one_performance(id):
 def delete_one_performance(id):
         # need admin status
     authorize()
-
+    # selects all performoances and returns ones matching id with the input value
     stmt = db.select(Performance).filter_by(id=id)
     performance = db.session.scalar(stmt)
     if performance:

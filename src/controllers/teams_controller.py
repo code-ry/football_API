@@ -10,6 +10,7 @@ teams_bp = Blueprint('teams', __name__, url_prefix='/teams')
 @teams_bp.route('/')
 @jwt_required()
 def all_teams():
+    #  Selects all  of Team and orders them by name.
     stmt = db.select(Team).order_by(Team.name)
     teams = db.session.scalars(stmt).all()
     return TeamSchema(many=True).dump(teams)
@@ -17,6 +18,7 @@ def all_teams():
 @teams_bp.route('/<int:id>')
 @jwt_required()
 def one_team(id):
+    #  Selects team with id matching iput
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     if team:
@@ -49,7 +51,7 @@ def auth_register():
 @jwt_required()
 def update_one_team(id):
     authorize()
-    # find the team
+    # find the team selects team by id equalling input
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     # if it exists, update it
@@ -71,7 +73,7 @@ def update_one_team(id):
 def delete_one_team(id):
         # need admin status
     authorize()
-
+    # select the Team with id matching the input
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     if team:
@@ -81,12 +83,4 @@ def delete_one_team(id):
     else:
         return {'error': f'team not found with id {id}'}, 404
 
-# @teams_bp.route('/<int:id>/matches/')
-# @jwt_required()
-# def all_teams_matches(id):
-
-#     stmt = db.select(Match).where(Match.team_id == id)
-#     matches = db.session.scalars(stmt).all()
-
-#     return MatchSchema(many=True).dump(matches)
 

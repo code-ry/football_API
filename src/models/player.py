@@ -35,7 +35,7 @@ class PlayerSchema(ma.Schema):
 
     @validates('name')
     def validate_status(self, value):
-        # Check if name already exists
+        # Check if name already exists, Selects all players where players name matches input
         stmt = db.select(Player).where(Player.name==value)
         player = db.session.scalar(stmt)
         # If player exists

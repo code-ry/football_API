@@ -23,5 +23,5 @@ class ScoreSchema(ma.Schema):
     score = fields.Integer(validate=Range(min=0, max=300))
 
     class Meta:
-        fields= ('score', 'team', 'match', 'team_id', 'match_id')
+        fields= ('id', 'score', 'team', 'match', 'team_id', 'match_id')
         ordered = True

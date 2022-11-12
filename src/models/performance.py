@@ -30,16 +30,7 @@ class PerformanceSchema(ma.Schema):
         Regexp('^[a-zA-Z0-9 ]+$', error='Injury must be only letters and numbers')))
     player_id = fields.Integer(load_only=True)
     match_id = fields.Integer(load_only=True)
-
-    # @validates('match_id')
-    # def validate_status(self, value):
-    #     # Check if player performance already exists in match
-    #     stmt = db.select(Performance).where(Performance.match_id==value & Performance.player_id==player_id)
-    #     match = db.session.scalar(stmt)
-    #     # If player exists
-    #     if match:
-    #         raise ValidationError('You already have a team with that name.(If Updating record Omit "name" field')
     
     class Meta:
-        fields= ('player', 'match', 'goals', 'behinds', 'disposals', 'injuries','player_id','match_id')
+        fields= ('id', 'player', 'match', 'goals', 'behinds', 'disposals', 'injuries','player_id','match_id')
         ordered = True
