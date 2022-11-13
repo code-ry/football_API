@@ -2,9 +2,11 @@
 
 ## Football Statistics App
 
-### Summary
+### Summary of Problem and Solution
 
-This web application is designed to provide statistics and information about Australian Rules Football teams, players and results. This is solving the problem of tracking performance data of sporting teams and their players for use by the following:
+This web application is designed to provide statistics and information about Australian Rules Football teams, players and results. This is solving the problem of tracking and storing data of sporting teams and their players. This data and information includes statistics for individual players, teams, the matches they play and the performances by players for each match. This is a problem as this data provides many insights to many different fields within the industry as well as third-party industries that rely on this information.
+
+ for use by the following:
 
 - Management of players within the sport. Management can track players performance based on average performance to gain insight into the value of the individual player. This can be used to determine a monetary value to pay a player.
 - Recruitment can use these statistics to calculate whether a player is required within a team or undesired. Future prospects can be found by analysing statistics of players and determining whether that skill is required within a particular team.
@@ -234,9 +236,13 @@ Tickets are arranged into **columns** which represent the workflow of the projec
 
 The Kandban boards will be used throughout the life-cycle of the project as it can be reprioritised, reassigned and updated as needed which makes it more flexible.
 
-### KanBan Board
+For keeping track of updates and version control to the project a Github repository is used. This allows for commiting of current versions and retraceablity to previous versions if needed. 
+
+### KanBan Board and Rrepository
 
 https://trello.com/b/hbSCNNPr/football-api
+
+https://github.com/code-ry/football_API
 
 ### Third Party Services
 
@@ -251,6 +257,21 @@ https://trello.com/b/hbSCNNPr/football-api
 ### API Endpoint Documentation
 
 #### Authentication Endpoints
+
+**Error returns**
+
+- When an expected body is received empty or wrong format
+A 400 error code is returned with the required message in JSON format
+- When a user fail to provide valid username/password
+A 401 error code is returned with the required message in JSON format
+- When a URL was not found on server
+A 404 error code is returned with the required message in JSON format
+- When a value is entered outside of range or invalid.
+A 400 error code is returned with the required message in JSON format
+- When a required field is not present.
+A Key error occurs and 400 code returned with the required message in JSON format
+- When an invalid input has been entered into a field.
+A Validation Error occurs and 400 code returned with the required message in JSON format
 
 **auth/register/**
 
