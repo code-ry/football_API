@@ -9,7 +9,7 @@ scores_bp = Blueprint('scores', __name__, url_prefix='/scores')
 @scores_bp.route('/')
 @jwt_required()
 def all_scores():
-    # Selects all with score ordered by id
+    # Selects all Score entities and returns them ordered ordered by their id
     stmt = db.select(Score).order_by(Score.id)
     scores = db.session.scalars(stmt).all()
     return ScoreSchema(many=True).dump(scores)
@@ -17,7 +17,8 @@ def all_scores():
 @scores_bp.route('/<int:id>')
 @jwt_required()
 def one_score(id):
-    # Selects all of scores and returns ones matching the id of input
+    # Filters out all Scores with score.id matching the input field in argument.
+    # returns single score entity
     stmt = db.select(Score).filter_by(id=id)
     score = db.session.scalar(stmt)
     if score:
@@ -49,7 +50,8 @@ def add_score():
 @jwt_required()
 def update_one_score(id):
     authorize()
-    # Selects all scores and returns ones matching the id of input
+    # Filters out all Scores with score.id matching the input field in argument.
+    # returns single score entity
     stmt = db.select(Score).filter_by(id=id)
     score = db.session.scalar(stmt)
     # if it exists, update it
@@ -70,7 +72,8 @@ def update_one_score(id):
 def delete_one_score(id):
         # need admin status
     authorize()
-    # Selects all scores and returns ones matching the id of input
+    # Filters out all Scores with score.id matching the input field in argument.
+    # returns single score entity
     stmt = db.select(Score).filter_by(id=id)
     score = db.session.scalar(stmt)
     if score:

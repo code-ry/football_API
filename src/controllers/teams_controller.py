@@ -10,7 +10,7 @@ teams_bp = Blueprint('teams', __name__, url_prefix='/teams')
 @teams_bp.route('/')
 @jwt_required()
 def all_teams():
-    #  Selects all  of Team and orders them by name.
+    #  Selects all of Team entities returns them by order of their name attribute
     stmt = db.select(Team).order_by(Team.name)
     teams = db.session.scalars(stmt).all()
     return TeamSchema(many=True).dump(teams)
@@ -18,7 +18,8 @@ def all_teams():
 @teams_bp.route('/<int:id>')
 @jwt_required()
 def one_team(id):
-    #  Selects team with id matching iput
+    # Filters out all teams with team.id matching the input field in argument.
+    # returns single team entity
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     if team:
@@ -51,7 +52,8 @@ def auth_register():
 @jwt_required()
 def update_one_team(id):
     authorize()
-    # find the team selects team by id equalling input
+    # Filters out all teams with team.id matching the input field in argument.
+    # returns single team entity
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     # if it exists, update it
@@ -73,7 +75,8 @@ def update_one_team(id):
 def delete_one_team(id):
         # need admin status
     authorize()
-    # select the Team with id matching the input
+    # Filters out all teams with team.id matching the input field in argument.
+    # returns single team entity
     stmt = db.select(Team).filter_by(id=id)
     team = db.session.scalar(stmt)
     if team:

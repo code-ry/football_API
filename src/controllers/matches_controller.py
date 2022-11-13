@@ -10,7 +10,7 @@ matches_bp = Blueprint('matches', __name__, url_prefix='/matches')
 @matches_bp.route('/')
 @jwt_required()
 def all_matches():
-    # selects all matches and orders by date attribute
+    # Selects all Matche entities and returns them ordered by their date attribute
     stmt = db.select(Match).order_by(Match.date.desc())
     matches = db.session.scalars(stmt).all()
     return MatchSchema(many=True).dump(matches)
@@ -18,7 +18,8 @@ def all_matches():
 @matches_bp.route('/<int:id>')
 @jwt_required()
 def one_match(id):
-    # selects all matches and returns ones that match the id of input
+    # Filters out all Matches with match.id matching the input field in argument.
+    # returns single match entity
     stmt = db.select(Match).filter_by(id=id)
     match = db.session.scalar(stmt)
     if match:
@@ -47,8 +48,8 @@ def add_match():
 @jwt_required()
 def update_one_match(id):
     authorize()
-    # find the match
-        # selects all matches and returns ones that match the id of input
+    # Filters out all Matches with match.id matching the input field in argument.
+    # returns single match entity
 
     stmt = db.select(Match).filter_by(id=id)
     match = db.session.scalar(stmt)
@@ -68,7 +69,8 @@ def update_one_match(id):
 def delete_one_match(id):
         # need admin status
     authorize()
-    # selects all matches and returns ones that match the id of input
+    # Filters out all Matches with match.id matching the input field in argument.
+    # returns single match entity
 
     stmt = db.select(Match).filter_by(id=id)
     match = db.session.scalar(stmt)
@@ -82,7 +84,7 @@ def delete_one_match(id):
 @matches_bp.route('/<int:id>/performances/')
 @jwt_required()
 def all_match_performances(id):
-    # selects all performances that the match_id attribute equals the input value
+    # selects all Performance entities that the match_id attribute equals the input value and returns them as a dict
     stmt = db.select(Performance).where(Performance.match_id == id)
     performances = db.session.scalars(stmt).all()
 

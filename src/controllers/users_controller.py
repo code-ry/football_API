@@ -10,7 +10,7 @@ users_bp = Blueprint('users', __name__, url_prefix='/users')
 @jwt_required()
 def all_users():
     authorize()
-    # Selects all of users and returns them in order and if is admin
+    # Selects all entity of User and returns them in order and if is admin
     stmt = db.select(User).order_by(User.is_admin , User.name)
     users = db.session.scalars(stmt).all()
     return UserSchema(many=True, exclude=['password']).dump(users)
@@ -19,7 +19,8 @@ def all_users():
 @jwt_required()
 def one_user(id):
     authorize()
-    # find the User, selects the User that has matching id to Input
+    # Filters out all users with user.id matching the input field in argument.
+    # returns single user
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
     if user:
@@ -31,7 +32,8 @@ def one_user(id):
 @jwt_required()
 def update_one_User(id):
     authorize()
-    # find the User, selects the User that has matching id to Input
+    # Filters out all users with user.id matching the input field in argument.
+    # returns single user
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
     # if it exists, update it
@@ -51,7 +53,8 @@ def update_one_User(id):
 def delete_one_user(id):
     # need admin status
     authorize()
-    # Selects the user matching the id from the input
+    # Filters out all users with user.id matching the input field in argument.
+    # returns single user
     stmt = db.select(User).filter_by(id=id)
     user = db.session.scalar(stmt)
     if user:

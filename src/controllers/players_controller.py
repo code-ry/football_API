@@ -10,7 +10,7 @@ players_bp = Blueprint('players', __name__, url_prefix='/players')
 @players_bp.route('/')
 @jwt_required()
 def all_players():
-    # Selects all of players and returns them in order of name
+    # Selects all of Player entities and returns them in order of name
     stmt = db.select(Player).order_by(Player.name)
     players = db.session.scalars(stmt).all()
     return PlayerSchema(many=True, exclude=['team_id']).dump(players)
@@ -18,7 +18,8 @@ def all_players():
 @players_bp.route('/<int:id>')
 @jwt_required()
 def one_player(id):
-    # selects all of players and returns ones matching the input
+    # Filters out all Player with player.id matching the input field in argument.
+    # returns single player entity
     stmt = db.select(Player).filter_by(id=id)
     player = db.session.scalar(stmt)
     if player:
@@ -53,7 +54,8 @@ def add_player():
 @jwt_required()
 def update_one_player(id):
     authorize()
-    #selects all  of players and returns ones matching the input
+    # Filters out all Player with player.id matching the input field in argument.
+    # returns single player entity
     stmt = db.select(Player).filter_by(id=id)
     player = db.session.scalar(stmt)
     # if it exists, update it
@@ -77,7 +79,8 @@ def update_one_player(id):
 def delete_one_player(id):
         # need admin status
     authorize()
-    # selects player id matching id with input
+    # Filters out all Player with player.id matching the input field in argument.
+    # returns single player entity
     stmt = db.select(Player).filter_by(id=id)
     player = db.session.scalar(stmt)
     if player:
@@ -90,7 +93,8 @@ def delete_one_player(id):
 @players_bp.route('/<int:id>/performances/')
 @jwt_required()
 def all_players_performances(id):
-    # selects performances that the player id attribute matches the input value
+    # selects all Performance entities that the player_id value attribute matches the input value in the argument
+    # returns all matching Performance entities
     stmt = db.select(Performance).where(Performance.player_id == id)
     performances = db.session.scalars(stmt).all()
 
