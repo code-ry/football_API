@@ -26,13 +26,13 @@ def seed_db():
         User(
             name = 'Ryan Bussey',
             email = 'admin@football.com',
-            password= bcrypt.generate_password_hash('afladmin').decode('utf-8'),
+            password= bcrypt.generate_password_hash('Afladm1n$').decode('utf-8'),
             is_admin = True
         ),
         User(
             name = 'Joe Blow',
             email = 'joeblow@gmail.com',
-            password= bcrypt.generate_password_hash('12345').decode('utf-8')
+            password= bcrypt.generate_password_hash('Aa12345$').decode('utf-8')
         ),
     ]
 
