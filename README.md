@@ -55,7 +55,27 @@ The model a class of SQLalchemy defines the table in the database with each attr
 
 The Schema , a class of Marshmallow, defines how to load/unload incoming data from requests. Each attribute that is to be loaded when the Schema is referenced is defined here. Nested Schemas are defined here as well to define how they are returned.
 
-- **Users**: 
+- **Users**: The User model defines the attributes as the following
+  
+```py
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    email = db.Column(db.String, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    is_admin = db.Column(db.Boolean, default=False)
+```
+
+The User model has no relations to any other models.
+
+The User Schema loads/unloads the following attributes when accepting data from a request
+
+```py
+    class Meta:
+        fields = ('id', 'name', 'email', 'password', 'is_admin')
+        ordered = True
+```
+
+
 - **Players**: The Player model defines the attributes as the following.
   
 ```py
@@ -128,9 +148,81 @@ As players is a nested list of players related to the team, elements of the Play
 players = fields.List(fields.Nested('PlayerSchema', only=['name', 'id', 'position']))
 ```
 
-- **Matches**: 
-- **Scores**:
-- **Performances**: 
+- **Performances**: The Performance model defines its attributes as the following:
+
+```py
+    id = db.Column(db.Integer, primary_key=True)
+    goals = db.Column(db.Integer, nullable=False)
+    behinds = db.Column(db.Integer, nullable=False)
+    disposals = db.Column(db.Integer, nullable=False)
+    injuries = db.Column(db.String, nullable=True)
+```
+
+The attributes of **player_id** and **match_id** are foreign keys from Player and Match models respectively. The relationship is defined that the value of **player** and **match** represent the Player and Match models and populate the performance value in the correspondng tables. These relationships are defined as following:
+
+```py
+    player_id = db.Column(db.Integer, db.ForeignKey('players.id'), nullable=False)
+    match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), nullable=False)
+    player = db.relationship('Player', back_populates='performances')
+    match = db.relationship('Match', back_populates='performances')
+
+```
+
+The Performance Schema contains nested fields of **player** and **match** which loads the corresponding attributes of the Schemas when Performance Schema is loaded. The Performance Schema has the following attributes loaded.
+
+```py
+    class Meta:
+        fields= ('id', 'player', 'match', 'goals', 'behinds', 'disposals', 'injuries','player_id','match_id')
+        ordered = True
+```
+
+- **Matches**: The Match model defines its attribute as the following:
+
+```py
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date)
+    location = db.Column(db.String, nullable=False)
+```
+
+The Match_id primary key is a foreign Key in Scores and Performances models and so the relationship is defined in the model. the value of scores identifies the relationship to the Score model and populates the match data when called, upon deletion of the parent table the child records are also deleted. The same applies to the performances relationship.
+
+```py
+    scores = db.relationship('Score', back_populates='match', cascade= 'all, delete')
+    performances = db.relationship('Performance', back_populates='match', cascade= 'all, delete')
+```
+
+The Match Schema has a nested attribute of **scores** which loads attributes of the Score Schema in when the Match Schema is loaded.
+
+```py
+    scores = fields.List(fields.Nested('ScoreSchema', exclude=['match']))
+    class Meta:
+        fields = ('id', 'date', 'location' ,'scores')
+```
+
+- **Scores**: The Score model defines its attribute as the following:
+
+```py
+id = db.Column(db.Integer, primary_key=True)
+    score = db.Column(db.Integer, nullable=False)
+    team_id = db.Column(db.Integer, db.ForeignKey('teams.id'), nullable=False)
+    match_id = db.Column(db.Integer, db.ForeignKey('matches.id'), nullable=False)
+
+```
+
+The attributes of **team_id** and **match_id** are foreign keys from the corresponding tables and are defined here.
+
+```py
+    team = db.relationship('Team', back_populates='scores')
+    match = db.relationship('Match', back_populates='scores')
+```
+
+The Score Schema contains attributes of team and match which are nested fields of the corresponding Schemas. The attribute loaded when the schema is called are the following.
+
+```py
+class Meta:
+        fields= ('id', 'score', 'team', 'match', 'team_id', 'match_id')
+        ordered = True
+```
 
 ### Project Management
 
